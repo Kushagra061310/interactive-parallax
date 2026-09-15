@@ -3,7 +3,6 @@
 A high-performance, multi-layered parallax scrolling experience engineered for the **IIT Bombay Techfest College Ambassador** program (150-Point Task).
 
 **[🚀 Launch the Live Parallax Experience](https://interactive-parallax.vercel.app)** 
-*(Note: Ensure your actual Vercel link is pasted above)*
 
 ## ⚙️ Technical Architecture
 To achieve butter-smooth, hardware-accelerated animations without layout thrashing, this architecture bypasses native CSS scroll events entirely.
