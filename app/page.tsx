@@ -1,105 +1,112 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 export default function Home() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
+  const { scrollYProgress } = useScroll();
 
-  // --- GLOBAL FOREGROUND (Moves across the entire page journey) ---
-  const box1Y = useTransform(scrollYProgress, [0, 1], ["0%", "-800%"]);
-  const box1X = useTransform(scrollYProgress, [0, 1], ["0%", "300%"]);
-  const box1Rotate = useTransform(scrollYProgress, [0, 1], [0, 360]);
+  // Hero Parallax (Moves down slightly to create depth)
+  const heroBgY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const heroTextY = useTransform(scrollYProgress, [0, 1], ["0%", "150%"]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
 
-  const box2Y = useTransform(scrollYProgress, [0, 1], ["0%", "-600%"]);
-  const box2X = useTransform(scrollYProgress, [0, 1], ["0%", "-300%"]);
-  const box2Rotate = useTransform(scrollYProgress, [0, 1], [0, -360]);
-
-  // --- SECTION 1: HERO PARALLAX ---
-  const heroBgY = useTransform(scrollYProgress, [0, 0.4], ["0%", "60%"]);
-  const heroTextY = useTransform(scrollYProgress, [0, 0.4], ["0%", "-120%"]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
-
-  // --- SECTION 2: HORIZONTAL PARALLAX ---
-  // Text slides in from the left and right based on scroll depth
-  const s2TitleX = useTransform(scrollYProgress, [0.1, 0.5], ["-100%", "0%"]);
-  const s2BodyX = useTransform(scrollYProgress, [0.1, 0.5], ["100%", "0%"]);
-  const s2Opacity = useTransform(scrollYProgress, [0.2, 0.5, 0.8], [0, 1, 0]);
-
-  // --- SECTION 3: DEPTH & SCALE PARALLAX ---
-  // Massive background text sliding sideways
-  const s3BgTextX = useTransform(scrollYProgress, [0.6, 1], ["50%", "-50%"]);
-  const s3CtaY = useTransform(scrollYProgress, [0.7, 1], ["50%", "0%"]);
+  // Card Parallax (Moving upward at strict, safe pixel rates)
+  const card1Y = useTransform(scrollYProgress, [0, 1], [0, -100]);
+  const card2Y = useTransform(scrollYProgress, [0, 1], [0, -250]);
+  const card3Y = useTransform(scrollYProgress, [0, 1], [0, -400]);
 
   const [isJoined, setIsJoined] = useState(false);
 
   return (
-    <main ref={containerRef} className="relative w-full bg-[#050505] font-sans overflow-hidden">
+    <main className="bg-[#050505] text-white font-sans overflow-x-hidden selection:bg-indigo-500">
       
-      {/* GLOBAL FOREGROUND LAYER: These objects float over ALL sections */}
-      <motion.div 
-        style={{ y: box1Y, x: box1X, rotate: box1Rotate }}
-        className="fixed top-[70%] left-[10%] z-40 w-32 h-32 md:w-48 md:h-48 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-transparent border border-indigo-400/30 backdrop-blur-md shadow-[0_0_30px_rgba(79,70,229,0.2)] pointer-events-none"
-      />
-      <motion.div 
-        style={{ y: box2Y, x: box2X, rotate: box2Rotate }}
-        className="fixed top-[85%] right-[15%] z-40 w-24 h-24 md:w-40 md:h-40 rounded-full bg-gradient-to-bl from-[#00ffcc]/20 to-transparent border border-[#00ffcc]/30 backdrop-blur-md shadow-[0_0_30px_rgba(0,255,204,0.2)] pointer-events-none"
-      />
-
       {/* --- SECTION 1: HERO --- */}
-      <section className="relative h-screen w-full flex items-center justify-center">
-        <motion.div style={{ y: heroBgY }} className="absolute inset-0 z-0 flex items-center justify-center opacity-40">
-          <div className="w-[80vw] h-[80vw] md:w-[50vw] md:h-[50vw] rounded-full bg-gradient-to-tr from-indigo-900 via-purple-900 to-[#00ffcc] blur-[120px]" />
-        </motion.div>
-
-        <motion.div style={{ y: heroTextY, opacity: heroOpacity }} className="relative z-10 text-center px-4">
-          <p className="text-[#00ffcc] font-mono tracking-[0.3em] text-sm md:text-base mb-4 uppercase">IIT Bombay Presents</p>
-          <h1 className="text-7xl md:text-9xl font-extrabold uppercase tracking-tighter text-white drop-shadow-2xl">Techfest</h1>
-          <p className="mt-6 text-gray-400 max-w-xl mx-auto text-lg font-light">Scroll to experience the depth.</p>
+      <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
+        {/* Parallax Grid Background */}
+        <motion.div 
+          className="absolute inset-0 z-0 opacity-20"
+          style={{
+            backgroundImage: 'radial-gradient(circle at center, #312e81 0%, transparent 70%), linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)',
+            backgroundSize: '100% 100%, 40px 40px, 40px 40px',
+            y: heroBgY
+          }}
+        />
+        
+        <motion.div style={{ y: heroTextY, opacity: heroOpacity }} className="relative z-10 text-center flex flex-col items-center">
+          <div className="px-4 py-1 border border-indigo-500/30 rounded-full bg-indigo-500/10 backdrop-blur-md mb-6">
+            <span className="text-[#00ffcc] font-mono text-sm tracking-widest uppercase">IIT Bombay Presents</span>
+          </div>
+          <h1 className="text-7xl md:text-9xl font-black uppercase tracking-tighter drop-shadow-2xl">
+            Techfest
+          </h1>
+          <p className="mt-6 text-xl text-gray-400 font-light tracking-wide">
+            Scroll to explore the parallax depth.
+          </p>
         </motion.div>
       </section>
 
-      {/* --- SECTION 2: HORIZONTAL KINETICS --- */}
-      <section className="relative h-[150vh] w-full bg-black z-30 flex flex-col justify-center px-8 md:px-24">
-        <div className="max-w-5xl relative z-10 overflow-hidden">
-          <motion.h2 style={{ x: s2TitleX, opacity: s2Opacity }} className="text-6xl md:text-8xl font-bold uppercase mb-6 text-white leading-tight">
-            Push The <span className="text-indigo-500 block">Limits</span>
-          </motion.h2>
-          <motion.p style={{ x: s2BodyX, opacity: s2Opacity }} className="text-2xl md:text-4xl text-gray-400 leading-relaxed font-light">
-            True parallax doesn't stop at the top. The foreground, midground, and background layers are actively responding to your scroll position, proving structural mastery of the DOM.
-          </motion.p>
+      {/* --- SECTION 2: DIFFERENTIAL PARALLAX CARDS --- */}
+      <section className="relative min-h-[150vh] w-full bg-black flex items-center justify-center px-4 py-20 z-20">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vw] bg-indigo-900/20 rounded-full blur-[120px] pointer-events-none" />
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 w-full max-w-6xl relative z-10">
+          
+          {/* Card 1: Slow */}
+          <motion.div style={{ y: card1Y }} className="bg-gray-900/40 backdrop-blur-xl border border-gray-700/50 p-8 rounded-2xl shadow-2xl flex flex-col h-[350px]">
+            <h3 className="text-[#00ffcc] font-mono text-sm tracking-widest mb-4">01 // COMPETITIONS</h3>
+            <h2 className="text-3xl font-bold mb-4">Innovate & Disrupt</h2>
+            <p className="text-gray-400 leading-relaxed flex-grow">
+              Compete against the sharpest minds across the continent. Push the boundaries of modern engineering.
+            </p>
+            <div className="h-1 w-12 bg-indigo-500 mt-auto" />
+          </motion.div>
+
+          {/* Card 2: Medium */}
+          <motion.div style={{ y: card2Y }} className="bg-gray-900/40 backdrop-blur-xl border border-gray-700/50 p-8 rounded-2xl shadow-2xl flex flex-col h-[350px] md:mt-24">
+            <h3 className="text-indigo-400 font-mono text-sm tracking-widest mb-4">02 // WORKSHOPS</h3>
+            <h2 className="text-3xl font-bold mb-4">Master The Tech</h2>
+            <p className="text-gray-400 leading-relaxed flex-grow">
+              Learn directly from industry leaders. Upskill yourself with hands-on technical sessions.
+            </p>
+            <div className="h-1 w-12 bg-[#00ffcc] mt-auto" />
+          </motion.div>
+
+          {/* Card 3: Fast */}
+          <motion.div style={{ y: card3Y }} className="bg-gray-900/40 backdrop-blur-xl border border-gray-700/50 p-8 rounded-2xl shadow-2xl flex flex-col h-[350px] md:mt-48">
+            <h3 className="text-purple-400 font-mono text-sm tracking-widest mb-4">03 // EXHIBITIONS</h3>
+            <h2 className="text-3xl font-bold mb-4">Experience The Future</h2>
+            <p className="text-gray-400 leading-relaxed flex-grow">
+              Witness bleeding-edge technology from global labs. Autonomous vehicles and advanced robotics on display.
+            </p>
+            <div className="h-1 w-12 bg-purple-500 mt-auto" />
+          </motion.div>
+
         </div>
       </section>
 
-      {/* --- SECTION 3: CALL TO ACTION --- */}
-      <section className="relative h-[120vh] w-full bg-gradient-to-b from-black to-indigo-950 flex flex-col items-center justify-center z-30 overflow-hidden">
-        
-        {/* Massive Background Typography Layer */}
-        <motion.div style={{ x: s3BgTextX }} className="absolute z-0 whitespace-nowrap opacity-[0.03] pointer-events-none">
-          <h1 className="text-[12rem] md:text-[20rem] font-black text-white uppercase tracking-tighter">
-            Innovation Legacy Techfest
-          </h1>
+      {/* --- SECTION 3: CTA --- */}
+      <section className="relative h-screen w-full bg-[#050505] flex items-center justify-center overflow-hidden z-30">
+        <motion.div style={{ y: heroBgY }} className="absolute inset-0 flex items-center justify-center opacity-20 pointer-events-none">
+           <h1 className="text-[12vw] font-black text-transparent stroke-gray-800 stroke-2 whitespace-nowrap" style={{ WebkitTextStroke: '2px #1f2937' }}>
+             TECHFEST 2026
+           </h1>
         </motion.div>
 
-        {/* Foreground CTA Layer */}
-        <motion.div style={{ y: s3CtaY }} className="relative z-10 flex flex-col items-center">
-          <h2 className="text-6xl md:text-8xl font-black uppercase text-white mb-8 text-center tracking-tighter">
-            Become An<br/>Ambassador
+        <motion.div className="relative z-10 text-center">
+          <h2 className="text-5xl md:text-7xl font-black uppercase mb-8">
+            Represent Your <br/><span className="text-indigo-500">Campus</span>
           </h2>
           <button 
             onClick={() => setIsJoined(true)}
             disabled={isJoined}
-            className={`px-10 py-4 font-bold text-xl rounded-sm transition-all duration-300 ${
+            className={`inline-block px-12 py-5 font-bold text-lg rounded-full transition-all duration-300 ${
               isJoined 
-                ? "bg-green-500 text-white cursor-default shadow-[0_0_30px_rgba(34,197,94,0.4)]" 
-                : "bg-[#00ffcc] text-black hover:bg-white hover:scale-105 shadow-[0_0_30px_rgba(0,255,204,0.2)]"
+                ? "bg-green-500 text-white cursor-default shadow-[0_0_40px_rgba(34,197,94,0.4)]" 
+                : "bg-white text-black hover:bg-[#00ffcc] hover:scale-105 shadow-[0_0_40px_rgba(255,255,255,0.2)]"
             }`}
           >
-            {isJoined ? "✓ INITIATIVE JOINED" : "JOIN THE INITIATIVE"}
+            {isJoined ? "✓ INITIATIVE JOINED" : "SUBMIT APPLICATION"}
           </button>
         </motion.div>
       </section>
