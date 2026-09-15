@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Techfest 2026: Differential Parallax Engine
 
-## Getting Started
+A high-performance, multi-layered parallax scrolling experience engineered for the **IIT Bombay Techfest College Ambassador** program (150-Point Task).
 
-First, run the development server:
+**[🚀 Launch the Live Parallax Experience](https://interactive-parallax.vercel.app)** 
+*(Note: Ensure your actual Vercel link is pasted above)*
 
+## ⚙️ Technical Architecture
+To achieve butter-smooth, hardware-accelerated animations without layout thrashing, this architecture bypasses native CSS scroll events entirely.
+
+* **Core Framework:** Next.js (App Router)
+* **Animation & Physics Engine:** Framer Motion
+* **Styling:** Tailwind CSS
+
+## 🎯 Rubric Fulfillment & Features
+This project was strictly architected to meet and exceed the task constraints:
+
+1. **Global Differential Tracking:** 
+   Utilizes Framer Motion's `useScroll` and `useTransform` hooks to map the user's scroll progress to precise Y-axis pixel translations. The background grid layer drifts downwards while foreground objects move upwards, creating an immersive 3D spatial illusion within a 2D DOM.
+2. **Kinetic Depth (Multiple Sections):** 
+   Foreground informational cards move upward at distinct, accelerated rates (-100px, -250px, -400px), ensuring the background and foreground are always moving at opposing vectors.
+3. **Micro-Interactions & Clean Design:** 
+   Implements modern glassmorphism (backdrop blurs), strict Techfest brand coloring, and tactile hover states (`whileHover` scaling, dynamic border glows, and a magnetic pulse on the Call to Action button) that respond to user intent without cluttering the viewport.
+
+## 💻 Local Execution
+To run this environment locally:
 ```bash
+# Install the ecosystem and dependencies
+npm install
+
+# Launch the Next.js development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
